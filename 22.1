@@ -1,0 +1,11 @@
+CREATE FUNCTION MyFun_22_1(userId BIGINT) RETURNS VARCHAR(20)
+  BEGIN
+      DECLARE result VARCHAR(20);
+      IF userId <= 0 THEN
+        SET result = 'wrong userId';
+      ELSE
+        SELECT name INTO RESULT from users WHERE users.id = userId;
+      END IF;
+
+      RETURN result;
+  END;

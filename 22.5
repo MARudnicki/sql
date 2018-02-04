@@ -1,0 +1,24 @@
+create table STATS (
+	STAT_ID INT(11) auto_increment not null,
+	STAT_DATE DATETIME NOT NULL,
+	STAT VARCHAR(20) NOT NULL,
+	VALUE INT(11) NOT NULL,
+    primary key(STAT_ID)
+);
+commit;
+
+create view BESTSELLERS_COUNT as
+select sum(BESTSELLER) as suma from books;
+
+DELIMITER $$
+
+create event BESTSELLERS_STATS
+	on schedule every 1 minute
+    do 
+		begin
+			call UpdateBestsellers();
+            		insert into stats (STAT_DATE, STAT, VALUE)
+			values (curdate(), "BESTSELLERS", (SELECT * FROM kodilla_course.bestsellers_count));
+		end$$
+
+DELIMITER ;
